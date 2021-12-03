@@ -17,7 +17,7 @@ PKG_SEARCH_MODULE(SDL2IMAGE REQUIRED SDL2_image>=2.0.0)
 
 
 # Vytvoření pinballu
-add_executable(pinball main.c Ball.c Frame.c Random.c BallArr.c Map.c Flipper.c Box.c Game.c Curve.c Slingshot.c)
+add_executable(pinball main.c Ball.c Frame.c BallArr.c Map.c Flipper.c Box.c Game.c Curve.c Slingshot.c)
 
 # Přidání knihovny k našemu pinballu
 #target_include_directories(chipmunk PRIVATE Chipmunk/include/chipmunk)
