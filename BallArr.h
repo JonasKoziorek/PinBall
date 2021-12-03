@@ -1,6 +1,5 @@
 #pragma once
 #include "Ball.h"
-#include "Random.h"
 #include "Frame.h"
 
 typedef struct{
