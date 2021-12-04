@@ -8,6 +8,7 @@
 #include <SDL2/SDL_audio.h>
 #include <stdbool.h>
 #include <time.h>
+//#include "Chipmunk/include/chipmunk/chipmunk.h"
 #include "Chipmunk/include/chipmunk/chipmunk.h"
 
 // my includes
@@ -30,9 +31,9 @@ static void WrapPic(SDL_Rect rect, SDL_Renderer *renderer){
 }
 
 // release allocated memory
-static void CleanUp(BallArr *ballarr, Map *map, Game *game){
-    DestroyBallArr( ballarr );
-    DestroyMap(map);
+static void CleanUp(cpSpace *space, BallArr *ballarr, Map *map, Game *game){
+    DestroyBallArr( space, ballarr );
+    DestroyMap(space, map);
     DeleteGame( game );
 }
 
@@ -52,6 +53,7 @@ static void CheckEvents( SDL_Event event, bool *running, BallArr *ballarr, Map *
                     // right arrow key pressed
                     case SDLK_RIGHT:
                         map->flips.arr[1]->state = FlipperMovingUp;
+                        printf("angle: %f\n",cpBodyGetAngle(map->flips.arr[1]->body));
                         break;
                     // down arrow key pressed
                     case SDLK_DOWN:
@@ -76,6 +78,10 @@ static void GameLoop( BallArr *ballarr, Map *map, Game *game){
 
         CheckEvents( event, &running, ballarr, map );
 
+        // update position of flippers
+        FlipperMove( game->space, map->flips.arr[0], timeStep );
+        FlipperMove( game->space, map->flips.arr[1], timeStep );
+
         // set background
         SDL_SetRenderDrawColor(game->renderer, 105, 105, 105, 255);
         SDL_RenderClear(game->renderer);
@@ -84,9 +90,6 @@ static void GameLoop( BallArr *ballarr, Map *map, Game *game){
         PrintBallArr( game->renderer, ballarr );
         PrintMap( game->space, game->renderer, map );
 
-        // update position of flippers
-        FlipperMove( game->space, map->flips.arr[0] );
-        FlipperMove( game->space, map->flips.arr[1] );
 
         cpSpaceStep(game->space, timeStep);
 
@@ -118,7 +121,7 @@ int main(){
     GameLoop( ballarr, map, game );
 
     // free all alocated memory
-    CleanUp(ballarr, map, game);
+    CleanUp(game->space, ballarr, map, game);
 
     IMG_Quit();
     SDL_Quit();

@@ -15,4 +15,4 @@ bool CheckGameStatus( BallArr *ballarr );
 
 void CheckInGameBalls(Frame *frame, BallArr *ballarr );
 
-void DestroyBallArr( BallArr *ballarr);
+void DestroyBallArr( cpSpace *space, BallArr *ballarr);

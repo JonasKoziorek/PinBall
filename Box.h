@@ -7,11 +7,11 @@
 typedef struct{
     cpBody *body;
     cpShape *shape;
-    Img img;
+    SDL_Rect rect;
 }Box;
 
-Box* InitBox(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, const char *path );
+Box* InitBox(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height);
 
-void PrintBox( SDL_Renderer *renderer, Box *box );
+void PrintBox( SDL_Renderer *renderer, Box *box, SDL_Texture *texture);
 
-void DeleteBox( Box *box );
+void DeleteBox( cpSpace *space, Box *box );

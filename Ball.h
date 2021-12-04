@@ -17,5 +17,5 @@ Ball* InitBall(cpSpace *space, SDL_Renderer *renderer, cpVect pos, cpVect vel, f
 
 void PrintBall( SDL_Renderer *renderer, Ball *ball );
 
-void DeleteBall( Ball *ball );
+void DeleteBall( cpSpace *space, Ball *ball );
 

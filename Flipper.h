@@ -18,16 +18,17 @@ typedef enum{
 typedef struct{
     cpBody *body;
     cpShape *shape;
-    Img img;
+    SDL_Rect rect;
     FlipperSide side;
     FlipperState state;
+    float angle;
 }Flipper;
 
-Flipper* InitFlipper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, const char *path, FlipperSide side);
+Flipper* InitFlipper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, FlipperSide side);
 
-void PrintFlipper( cpSpace *space, SDL_Renderer *renderer, Flipper *flip );
+void PrintFlipper( cpSpace *space, SDL_Renderer *renderer, Flipper *flip, SDL_Texture *texture);
 
-void FlipperMove( cpSpace *space, Flipper *flip );
+void FlipperMove( cpSpace *space, Flipper *flip, cpFloat timeStep );
 
-void DeleteFlipper( Flipper *flip );
+void DeleteFlipper( cpSpace *space, Flipper *flip );
 

@@ -10,17 +10,17 @@ typedef enum{
 typedef struct{
     cpBody *body;
     cpShape *shape;
-    Img img;
+    SDL_Rect rect;
     CurveRot rot;
     int precision;
 }Curve;
 
 void ShowCurvature(SDL_Renderer *renderer, Curve *curve);
 
-Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, CurveRot rot, const char *path );
+Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, CurveRot rot );
 
 void ComputeCurve( int count, cpVect *verts, float width, float height, CurveRot rot);
 
-void PrintCurve( SDL_Renderer *renderer, Curve *curve );
+void PrintCurve( SDL_Renderer *renderer, Curve *curve, SDL_Texture *texture );
 
-void DeleteCurve( Curve *curve );
+void DeleteCurve( cpSpace *space, Curve *curve );

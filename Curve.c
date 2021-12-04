@@ -56,7 +56,7 @@ static void ChooseGravity( Curve *curve, float width, float height ){
     }
 }
 
-Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, CurveRot rot, const char *path ){
+Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, CurveRot rot ){
     Curve *curve = (Curve*)malloc( sizeof(Curve) );
     curve->precision = 30;
     curve->rot = rot;
@@ -70,19 +70,16 @@ Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width
     cpBodySetVelocity(curve->body, cpvzero);
 
     cpFloat radius = 75;
-    cpVect *verts = (cpVect*)malloc( curve->precision * sizeof(cpVect) );
+    //cpVect *verts = (cpVect*)malloc( curve->precision * sizeof(cpVect) );
+    cpVect verts[curve->precision];
     ComputeCurve( curve->precision, verts, width, height, curve->rot );
 
     curve->shape = cpSpaceAddShape( space, cpPolyShapeNewRaw( curve->body, curve->precision, verts, radius ));
-    free( verts );
 
-    sscanf(path, "%s", curve->img.sprite);
-    SDL_Texture *texture = IMG_LoadTexture(renderer, curve->img.sprite);
-    curve->img.texture = texture;
-    curve->img.rect.x = cpBodyGetPosition(curve->body).x; 
-    curve->img.rect.y = - cpBodyGetPosition(curve->body).y; 
-    curve->img.rect.w = width;
-    curve->img.rect.h = height;
+    curve->rect.x = cpBodyGetPosition(curve->body).x; 
+    curve->rect.y = - cpBodyGetPosition(curve->body).y; 
+    curve->rect.w = width;
+    curve->rect.h = height;
     return curve;
 }
 
@@ -97,20 +94,20 @@ void ShowCurvature(SDL_Renderer *renderer, Curve *curve){
         CurveRot rot = curve->rot;
         switch( rot ){
             case CurveRotNE:
-                r.x = pos.x - curve->img.rect.w / 2.0 + vert.x;
-                r.y = -(pos.y + vert.y) + curve->img.rect.h / 2.0;
+                r.x = pos.x - curve->rect.w / 2.0 + vert.x;
+                r.y = -(pos.y + vert.y) + curve->rect.h / 2.0;
                 break;
             case CurveRotNW:
-                r.x = pos.x + curve->img.rect.w / 2.0 + vert.x;
-                r.y = -(pos.y + vert.y) + curve->img.rect.h / 2.0;
+                r.x = pos.x + curve->rect.w / 2.0 + vert.x;
+                r.y = -(pos.y + vert.y) + curve->rect.h / 2.0;
                 break;
             case CurveRotSE:
-                r.x = pos.x - curve->img.rect.w / 2.0 + vert.x;
-                r.y = -(pos.y + vert.y) - curve->img.rect.h / 2.0;
+                r.x = pos.x - curve->rect.w / 2.0 + vert.x;
+                r.y = -(pos.y + vert.y) - curve->rect.h / 2.0;
                 break;
             case CurveRotSW:
-                r.x = pos.x + curve->img.rect.w / 2.0 + vert.x;
-                r.y = -(pos.y + vert.y) - curve->img.rect.h / 2.0;
+                r.x = pos.x + curve->rect.w / 2.0 + vert.x;
+                r.y = -(pos.y + vert.y) - curve->rect.h / 2.0;
                 break;
             default:
                 break;
@@ -122,25 +119,25 @@ void ShowCurvature(SDL_Renderer *renderer, Curve *curve){
 }
             
 // prints out the curve based on its rotation
-void PrintCurve( SDL_Renderer *renderer, Curve *curve ){
+void PrintCurve( SDL_Renderer *renderer, Curve *curve, SDL_Texture *texture ){
     cpVect pos = cpBodyGetPosition(curve->body);
-    curve->img.rect.x = pos.x - curve->img.rect.w / 2.0;
-    curve->img.rect.y = -pos.y - curve->img.rect.h / 2.0;
+    curve->rect.x = pos.x - curve->rect.w / 2.0;
+    curve->rect.y = -pos.y - curve->rect.h / 2.0;
     switch( curve->rot ){
         case CurveRotNE:
-            SDL_RenderCopyEx(renderer, curve->img.texture , NULL, &curve->img.rect, 0, NULL, SDL_FLIP_VERTICAL);
+            SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_VERTICAL);
             ShowCurvature( renderer, curve );
             break;
         case CurveRotNW:
-            SDL_RenderCopyEx(renderer, curve->img.texture , NULL, &curve->img.rect, 180, NULL, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 180, NULL, SDL_FLIP_NONE);
             ShowCurvature( renderer, curve );
             break;
         case CurveRotSE:
-            SDL_RenderCopyEx(renderer, curve->img.texture , NULL, &curve->img.rect, 0, NULL, SDL_FLIP_NONE);
+            SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_NONE);
             ShowCurvature( renderer, curve );
             break;
         case CurveRotSW:
-            SDL_RenderCopyEx(renderer, curve->img.texture , NULL, &curve->img.rect, 0, NULL, SDL_FLIP_HORIZONTAL);
+            SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_HORIZONTAL);
             ShowCurvature( renderer, curve );
             break;
         default:
@@ -148,9 +145,10 @@ void PrintCurve( SDL_Renderer *renderer, Curve *curve ){
     }
 }
 
-void DeleteCurve( Curve *curve ){
+void DeleteCurve( cpSpace *space, Curve *curve ){
+    cpSpaceRemoveBody( space, curve->body );
+    cpSpaceRemoveShape( space, curve->shape );
     cpShapeFree(curve->shape);
     cpBodyFree(curve->body);
-    SDL_DestroyTexture(curve->img.texture);
     free(curve);
 }

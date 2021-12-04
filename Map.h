@@ -30,20 +30,24 @@ typedef struct{
 typedef struct{
     Box **arr;
     int len;
+    SDL_Texture *texture;
 }Boxes;
 
 typedef struct{
     Flipper *arr[2];
+    SDL_Texture *texture;
 }Flippers;
 
 typedef struct{
     Curve **arr;
     int len;
+    SDL_Texture *texture;
 }Curves;
 
 typedef struct{
     Slingshot **arr;
     int len;
+    SDL_Texture *texture;
 }Slings;
 
 typedef struct{
@@ -62,12 +66,16 @@ void SetupWall(Map *map, cpSpace *space, int i, cpVect p1, cpVect p2 );
 
 void SetupWalls( cpSpace *space, Map *map, const int len, Frame frame );
 
-void SetupBoxes( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer);
+void SetupBoxes( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer, const char *path);
 
-void SetupFlippers( cpSpace *space, SDL_Renderer *renderer , Map *map);
+void SetupFlippers( cpSpace *space, SDL_Renderer *renderer , Map *map, const char *path);
+
+void SetupCurves( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer, const char *path);
+
+void SetupSlingshots( Map *map, cpSpace *space, SDL_Renderer *renderer, int len, const char *path);
 
 void PrintMap( cpSpace *space, SDL_Renderer *renderer, Map *map );
 
 Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer);
     
-void DestroyMap( Map *map );
+void DestroyMap( cpSpace *space, Map *map );

@@ -11,12 +11,12 @@ typedef enum{
 typedef struct{
     cpBody *body;
     cpShape *shape;
-    Img img;
+    SDL_Rect rect;
     SlingSide type;
 }Slingshot;
 
-Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, SlingSide type, const char *path );
+Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, SlingSide type );
 
-void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling );
+void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling, SDL_Texture *texture );
 
-void DeleteSlingshot( Slingshot *sling );
+void DeleteSlingshot( cpSpace *space, Slingshot *sling );

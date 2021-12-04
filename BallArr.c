@@ -51,9 +51,9 @@ void CheckInGameBalls( Frame *frame, BallArr *ballarr ){
    }
 }
 
-void DestroyBallArr( BallArr *ballarr){
+void DestroyBallArr( cpSpace *space, BallArr *ballarr){
     for( int i = ballarr->len - 1; i >= 0; i-- ){
-       DeleteBall( ballarr->arr[i] ); 
+       DeleteBall( space, ballarr->arr[i] ); 
     }
     free(ballarr->arr);
     free(ballarr);

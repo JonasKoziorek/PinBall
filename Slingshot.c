@@ -1,4 +1,5 @@
 #include "Slingshot.h"
+#include <SDL2/SDL_render.h>
 
 // I have already chosen image for the Slingshot object and this function just computes approximate vertices of this object
 void ComputeSlingVerts(float width, float height, cpVect *verts, SlingSide type){
@@ -16,7 +17,7 @@ void ComputeSlingVerts(float width, float height, cpVect *verts, SlingSide type)
    }
 }
 
-Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, SlingSide type, const char *path ){
+Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, SlingSide type ){
     Slingshot *sling = (Slingshot*)malloc( sizeof(Slingshot) );
     sling->body = cpBodyNewStatic();
     sling->type = type;
@@ -30,47 +31,36 @@ Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, flo
 
     int len = 4;
     float radius = 10;
-    cpVect *verts = (cpVect*)malloc( len * sizeof(cpVect) );
+    cpVect verts[len]; 
     ComputeSlingVerts(width, height, verts, sling->type);
     sling->shape = cpSpaceAddShape(space, cpPolyShapeNewRaw(sling->body, len, verts, radius) );
     cpShapeSetFriction(sling->shape, 5.0);
     cpShapeSetElasticity(sling->shape, 0.2);
 
-    free(verts);
-
     // setup sdl texture and rect
-    sscanf(path, "%s", sling->img.sprite);
-    SDL_Texture *texture = IMG_LoadTexture(renderer, sling->img.sprite);
-    sling->img.texture = texture;
-    sling->img.rect.x = cpBodyGetPosition(sling->body).x; 
-    sling->img.rect.y = - cpBodyGetPosition(sling->body).y; 
-    sling->img.rect.w = width;
-    sling->img.rect.h = height;
+    sling->rect.x = cpBodyGetPosition(sling->body).x; 
+    sling->rect.y = - cpBodyGetPosition(sling->body).y; 
+    sling->rect.w = width;
+    sling->rect.h = height;
 
     return sling;
 }
 
 // display slingshot image on sdl window
 // flip image according to the slingshot type
-void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling ){
+void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling, SDL_Texture *texture){
     cpVect pos = cpBodyGetPosition(sling->body);
-    sling->img.rect.x = pos.x - sling->img.rect.w / 2.0;
-    sling->img.rect.y = -pos.y - sling->img.rect.h / 2.0;
-    
-    if( sling->type == SlingSideRight ){
-        SDL_RenderCopyEx(renderer, sling->img.texture , NULL, &sling->img.rect, 0, NULL, SDL_FLIP_NONE);
+    sling->rect.x = pos.x - sling->rect.w / 2.0;
+    sling->rect.y = -pos.y - sling->rect.h / 2.0;
+    SDL_RenderCopyEx(renderer, texture , NULL, &sling->rect, 0, NULL, sling->type == SlingSideRight ? SDL_FLIP_NONE : SDL_FLIP_HORIZONTAL);
 
-    }
-    else{
-        SDL_RenderCopyEx(renderer, sling->img.texture , NULL, &sling->img.rect, 0, NULL, SDL_FLIP_HORIZONTAL);
-
-    }
 }
 
 // free memory allocated in InitSlingshot
-void DeleteSlingshot( Slingshot *sling ){
+void DeleteSlingshot( cpSpace *space, Slingshot *sling ){
+    cpSpaceRemoveShape( space, sling->shape );
+    cpSpaceRemoveBody( space, sling->body );
     cpShapeFree(sling->shape);
     cpBodyFree(sling->body);
-    SDL_DestroyTexture(sling->img.texture);
     free(sling);
 }
