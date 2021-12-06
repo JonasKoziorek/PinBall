@@ -136,7 +136,7 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
 
     // curves
     const int curvelen = 4;
-    SetupCurves( space, map, curvelen, renderer, "../images/rcurve.png" );
+    SetupCurves( space, map, curvelen, renderer, "images/rcurve.png" );
 
     // walls
     const int wallen = 5;
@@ -144,14 +144,14 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
 
     // boxes
     const int boxlen = 6;
-    SetupBoxes( space, map, boxlen, renderer, "../images/wall.jpg" );
+    SetupBoxes( space, map, boxlen, renderer, "images/wall.jpg" );
 
     // flippers
-    SetupFlippers( space, renderer, map, "../images/flipper.png" );  
+    SetupFlippers( space, renderer, map, "images/flipper.png" );  
 
     // slingshots
     const int slinglen = 2;
-    SetupSlingshots( map, space, renderer, slinglen, "../images/slingshot.png" );
+    SetupSlingshots( map, space, renderer, slinglen, "images/slingshot.png" );
 
     return map;
 }
