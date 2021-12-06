@@ -68,10 +68,28 @@ void SetupBoxes( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer
 
 }
 
+void SetupSprings( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer, const char *path){
+    Spring **arr = (Spring**)malloc( len * sizeof(Spring*) );
+    map->springs.arr = arr;
+    map->springs.len = len;
+    map->springs.texture = IMG_LoadTexture(renderer, path);
+
+    // left
+    map->springs.arr[0] = InitSpring( space, renderer, cpv(0, -450), 35, 10);
+    map->springs.arr[0]->state = SpringIdle;
+    MapSetObjectFriEla( map->springs.arr[0]->shape, map->fri, map->ela );
+
+    // right
+    map->springs.arr[1] = InitSpring( space, renderer, cpv(665, -450), 35, 10);
+    map->springs.arr[1]->state = SpringIdle;
+    MapSetObjectFriEla( map->springs.arr[0]->shape, map->fri, map->ela );
+    MapSetObjectFriEla( map->springs.arr[1]->shape, map->fri, map->ela );
+}
+
 void SetupFlippers( cpSpace *space, SDL_Renderer *renderer , Map *map, const char *path){
     map->flips.texture =  IMG_LoadTexture(renderer, path);
-    map->flips.arr[0] = InitFlipper(space, renderer, cpv(200,-650), 120, 30, FlipperSideLeft);
-     map->flips.arr[1] = InitFlipper(space, renderer, cpv(380,-650), 120, 30, FlipperSideRight);
+    map->flips.arr[0] = InitFlipper(space, renderer, cpv(200,-650), 130, 30, FlipperSideLeft);
+     map->flips.arr[1] = InitFlipper(space, renderer, cpv(370,-650), 130, 30, FlipperSideRight);
 }
 
 void SetupCurves( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer, const char *path){
@@ -103,8 +121,8 @@ void SetupSlingshots( Map *map, cpSpace *space, SDL_Renderer *renderer, int len,
     map->slings.len = len;
     map->slings.texture =  IMG_LoadTexture(renderer, path);
 
-    map->slings.arr[0] = InitSlingshot( space, renderer, cpv(150, -380), 150, 150, SlingSideLeft );
-    map->slings.arr[1] = InitSlingshot( space, renderer, cpv(450, -380), 150, 150, SlingSideRight );
+    map->slings.arr[0] = InitSlingshot( space, renderer, cpv(120, -380), 150, 150, SlingSideLeft );
+    map->slings.arr[1] = InitSlingshot( space, renderer, cpv(460, -380), 150, 150, SlingSideRight );
     
 }
 
@@ -121,6 +139,9 @@ void PrintMap( cpSpace *space, SDL_Renderer *renderer, Map *map ){
         }
         for( int i = 0; i < map->slings.len; i++ ){
             PrintSlingshot( renderer, map->slings.arr[i], map->slings.texture );
+        }
+        for( int i = 0; i < map->springs.len; i++ ){
+            PrintSpring( renderer, map->springs.arr[i], map->springs.texture );
         }
 }
 
@@ -153,6 +174,9 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
     const int slinglen = 2;
     SetupSlingshots( map, space, renderer, slinglen, "images/slingshot.png" );
 
+    // springs
+    SetupSprings( space, map, 2, renderer, "images/black.png" );
+
     return map;
 }
 
@@ -171,6 +195,12 @@ void DestroyMap( cpSpace *space, Map *map ){
     }
     SDL_DestroyTexture(map->boxes.texture);
     free(map->boxes.arr);
+
+    for( int j = map->springs.len - 1; j >= 0; j-- ){
+        DeleteSpring( space, map->springs.arr[j] );  
+    }
+    SDL_DestroyTexture(map->springs.texture);
+    free(map->springs.arr);
 
     for( int i = 0; i < 2; i++ ){
         DeleteFlipper( space, map->flips.arr[i] );

@@ -126,19 +126,15 @@ void PrintCurve( SDL_Renderer *renderer, Curve *curve, SDL_Texture *texture ){
     switch( curve->rot ){
         case CurveRotNE:
             SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_VERTICAL);
-            ShowCurvature( renderer, curve );
             break;
         case CurveRotNW:
             SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 180, NULL, SDL_FLIP_NONE);
-            ShowCurvature( renderer, curve );
             break;
         case CurveRotSE:
             SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_NONE);
-            ShowCurvature( renderer, curve );
             break;
         case CurveRotSW:
             SDL_RenderCopyEx(renderer, texture , NULL, &curve->rect, 0, NULL, SDL_FLIP_HORIZONTAL);
-            ShowCurvature( renderer, curve );
             break;
         default:
             break;

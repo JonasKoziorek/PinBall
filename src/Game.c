@@ -7,7 +7,7 @@ Game* InitGame(){
     Frame frame = {.width = 700, .height = 700 };
     game->frame = frame;
 
-    cpVect gravity = cpv(0, -7);
+    cpVect gravity = cpv(0, -9);
 
     // chipmunk space
     cpSpace *space = cpSpaceNew();

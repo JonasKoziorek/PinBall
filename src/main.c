@@ -20,6 +20,7 @@
 #include "Box.h"
 #include "Game.h"
 #include "Slingshot.h"
+#include "Spring.h"
 
 // draws borders of SDL_Rect 
 static void WrapPic(SDL_Rect rect, SDL_Renderer *renderer){
@@ -53,12 +54,11 @@ static void CheckEvents( SDL_Event event, bool *running, BallArr *ballarr, Map *
                     // right arrow key pressed
                     case SDLK_RIGHT:
                         map->flips.arr[1]->state = FlipperMovingUp;
-                        printf("angle: %f\n",cpBodyGetAngle(map->flips.arr[1]->body));
                         break;
                     // down arrow key pressed
                     case SDLK_DOWN:
-                        cpBodyApplyImpulseAtLocalPoint(ballarr->arr[0]->body, cpv(0, 2000), cpv(0,0) );
-                        cpBodyApplyImpulseAtLocalPoint(ballarr->arr[1]->body, cpv(0, 2000), cpv(0,0) );
+                        map->springs.arr[0]->state = SpringMovingUp;
+                        map->springs.arr[1]->state = SpringMovingUp;
                         break;
                     default:
                         break;
@@ -81,6 +81,10 @@ static void GameLoop( BallArr *ballarr, Map *map, Game *game){
         // update position of flippers
         FlipperMove( game->space, map->flips.arr[0], timeStep );
         FlipperMove( game->space, map->flips.arr[1], timeStep );
+
+        // update position of springs
+        SpringMove( map->springs.arr[0] );
+        SpringMove( map->springs.arr[1] );
 
         // set background
         SDL_SetRenderDrawColor(game->renderer, 105, 105, 105, 255);

@@ -6,8 +6,8 @@ BallArr* InitBallArr(cpSpace *space, SDL_Renderer *renderer,int len){
     Ball** arr = (Ball**)malloc( sizeof(Ball*) * len);
     ballarr->len = len;
     ballarr->arr = arr;
-    ballarr->arr[0]  = InitBall(space, renderer, cpv(15, -450), cpv(10, 10), 15, "images/pinball.png");
-    ballarr->arr[1]  = InitBall(space, renderer, cpv(685, -450), cpv(10, 10), 15, "images/pinball.png");
+    ballarr->arr[0]  = InitBall(space, renderer, cpv(15, -400), cpv(10, 10), 15, "images/pinball.png");
+    ballarr->arr[1]  = InitBall(space, renderer, cpv(685, -400), cpv(10, 10), 15, "images/pinball.png");
 
     ballarr->arr[ballarr->len-3]  = InitBumper(space, renderer, cpv(235, -200), cpv(0, 0), 40, "images/linux.png");
     ballarr->arr[ballarr->len-2]  = InitBumper(space, renderer, cpv(350, -350), cpv(0, 0), 40, "images/linux.png");

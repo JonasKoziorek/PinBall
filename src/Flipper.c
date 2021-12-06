@@ -12,7 +12,7 @@ Flipper* InitFlipper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float w
     cpBodySetVelocity(flip->body, cpvzero);
 
     flip->shape = cpSpaceAddShape(space, cpBoxShapeNew(flip->body, width, height, 0.01) );
-    cpShapeSetElasticity(flip->shape, 1.2);
+    cpShapeSetElasticity(flip->shape, 0.8);
     cpShapeSetFriction(flip->shape, 0.4);
     flip->side = side;
     flip->state = FlipperNotMoving;

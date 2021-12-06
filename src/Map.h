@@ -5,6 +5,7 @@
 #include "Flipper.h"
 #include "Curve.h"
 #include "Slingshot.h"
+#include "Spring.h"
 
 /*
     Map structure unifies all the static objects under one structure.
@@ -51,11 +52,18 @@ typedef struct{
 }Slings;
 
 typedef struct{
+    Spring **arr;
+    int len;
+    SDL_Texture *texture;
+}Springs;
+
+typedef struct{
     Walls walls;
     Boxes boxes; 
     Flippers flips;
     Curves curves;
     Slings slings;
+    Springs springs;
     cpFloat fri;
     cpFloat ela;
 }Map;
