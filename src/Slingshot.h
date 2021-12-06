@@ -1,7 +1,6 @@
 #pragma once
 #include "Chipmunk/include/chipmunk/chipmunk.h"
 #include "SDL2/SDL_image.h"
-#include "Img.h"
 
 typedef enum{
     SlingSideLeft,

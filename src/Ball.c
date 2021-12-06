@@ -57,9 +57,9 @@ void PrintBall( SDL_Renderer *renderer, Ball *ball ){
 
 void DeleteBall( cpSpace *space, Ball *ball ){
     cpSpaceRemoveBody( space, ball->body );
-    //cpBodyFree(ball->body);
     cpSpaceRemoveShape( space, ball->shape );
-    //cpShapeFree(ball->shape);
+    cpBodyFree(ball->body);
+    cpShapeFree(ball->shape);
     SDL_DestroyTexture(ball->img.texture);
     free(ball);
 }

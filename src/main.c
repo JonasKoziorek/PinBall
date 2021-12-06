@@ -1,26 +1,11 @@
 // external libraries
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_audio.h>
-#include <stdbool.h>
-#include <time.h>
-//#include "Chipmunk/include/chipmunk/chipmunk.h"
 #include "Chipmunk/include/chipmunk/chipmunk.h"
 
 // my includes
-#include "Ball.h"
-#include "Frame.h"
 #include "BallArr.h"
 #include "Map.h"
-#include "Flipper.h"
-#include "Box.h"
 #include "Game.h"
-#include "Slingshot.h"
-#include "Spring.h"
 
 // draws borders of SDL_Rect 
 static void WrapPic(SDL_Rect rect, SDL_Renderer *renderer){
