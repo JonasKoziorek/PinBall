@@ -1,4 +1,5 @@
-Run:
+Simple PinBall game made as an university project.
+To try it out clone the repository and run:
 
     mkdir build
     cd build
