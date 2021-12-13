@@ -21,6 +21,8 @@ Then in the project folder run
 
 ![plot](images/screenshot.PNG)
 
-You can bounce the balls of with pressing down arrow. The flippers on the bottom are cotroled by left and right arrows.
+At start you can bounce the balls off with pressing down arrow. The flippers on the bottom are cotroled by left and right arrows.
 
 ![Alt Text](images/video.gif)
+
+The game is buggy, especially the collision detection of curved objects doesn't work well. I created it in course of one month and with no previous experience with SDL, Chipmunk or CMake.
