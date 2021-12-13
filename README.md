@@ -19,4 +19,4 @@ Then in the project folder run
     cd ..
     make -C build && ./build/src/pinball
 
-![Alt text](images/screenshot.png?raw=true "Title")
+![plot](images/screenshot.png)
