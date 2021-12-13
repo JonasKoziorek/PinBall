@@ -20,3 +20,7 @@ Then in the project folder run
     make -C build && ./build/src/pinball
 
 ![plot](images/screenshot.PNG)
+
+You can bounce the balls of with pressing down arrow. The flippers on the bottom are cotroled by left and right arrows.
+
+![Alt Text](images/video.gif)
