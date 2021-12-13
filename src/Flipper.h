@@ -24,6 +24,8 @@ typedef struct{
     float angle;
 }Flipper;
 
+void ComputeFlipperVerts(float width, float height,cpVect *verts, FlipperSide side);
+
 Flipper* InitFlipper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, FlipperSide side);
 
 void PrintFlipper( cpSpace *space, SDL_Renderer *renderer, Flipper *flip, SDL_Texture *texture);

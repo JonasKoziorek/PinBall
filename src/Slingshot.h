@@ -14,6 +14,8 @@ typedef struct{
     SlingSide type;
 }Slingshot;
 
+void ComputeSlingVerts(float width, float height, cpVect *verts, SlingSide type);
+
 Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, SlingSide type );
 
 void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling, SDL_Texture *texture );

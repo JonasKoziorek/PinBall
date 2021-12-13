@@ -9,9 +9,9 @@ BallArr* InitBallArr(cpSpace *space, SDL_Renderer *renderer,int len){
     ballarr->arr[0]  = InitBall(space, renderer, cpv(15, -400), cpv(10, 10), 15, "images/pinball.png");
     ballarr->arr[1]  = InitBall(space, renderer, cpv(685, -400), cpv(10, 10), 15, "images/pinball.png");
 
-    ballarr->arr[ballarr->len-3]  = InitBumper(space, renderer, cpv(235, -200), cpv(0, 0), 40, "images/linux.png");
-    ballarr->arr[ballarr->len-2]  = InitBumper(space, renderer, cpv(350, -350), cpv(0, 0), 40, "images/linux.png");
-    ballarr->arr[ballarr->len-1]  = InitBumper(space, renderer, cpv(465, -200), cpv(0, 0), 40, "images/linux.png");
+    ballarr->arr[ballarr->len-3]  = InitBumper(space, renderer, cpv(235, -150), cpv(0, 0), 40, "images/linux.png");
+    ballarr->arr[ballarr->len-2]  = InitBumper(space, renderer, cpv(350, -300), cpv(0, 0), 40, "images/linux.png");
+    ballarr->arr[ballarr->len-1]  = InitBumper(space, renderer, cpv(465, -150), cpv(0, 0), 40, "images/linux.png");
 
     return ballarr;
 }
@@ -52,9 +52,12 @@ void CheckInGameBalls( Frame *frame, BallArr *ballarr ){
 }
 
 void DestroyBallArr( cpSpace *space, BallArr *ballarr){
-    for( int i = ballarr->len - 1; i >= 0; i-- ){
+    for( int i = 0; i < ballarr->len - 3; i++ ){
        DeleteBall( space, ballarr->arr[i] ); 
     }
+    DeleteBumper( space, ballarr->arr[ballarr->len-3]);
+    DeleteBumper( space, ballarr->arr[ballarr->len-2]);
+    DeleteBumper( space, ballarr->arr[ballarr->len-1]);
     free(ballarr->arr);
     free(ballarr);
 }

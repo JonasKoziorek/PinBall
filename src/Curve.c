@@ -58,7 +58,7 @@ static void ChooseGravity( Curve *curve, float width, float height ){
 
 Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, CurveRot rot ){
     Curve *curve = (Curve*)malloc( sizeof(Curve) );
-    curve->precision = 30;
+    curve->precision = 400;
     curve->rot = rot;
     curve->body = cpBodyNewStatic();
 
@@ -69,8 +69,7 @@ Curve* InitCurve(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width
     cpBodySetPosition(curve->body, pos);
     cpBodySetVelocity(curve->body, cpvzero);
 
-    cpFloat radius = 75;
-    //cpVect *verts = (cpVect*)malloc( curve->precision * sizeof(cpVect) );
+    cpFloat radius = (rot == CurveRotNE || rot == CurveRotNW) ? 90 : 70;
     cpVect verts[curve->precision];
     ComputeCurve( curve->precision, verts, width, height, curve->rot );
 
@@ -142,7 +141,6 @@ void PrintCurve( SDL_Renderer *renderer, Curve *curve, SDL_Texture *texture ){
 }
 
 void DeleteCurve( cpSpace *space, Curve *curve ){
-    cpSpaceRemoveBody( space, curve->body );
     cpSpaceRemoveShape( space, curve->shape );
     cpShapeFree(curve->shape);
     cpBodyFree(curve->body);

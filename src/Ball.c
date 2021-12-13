@@ -2,14 +2,14 @@
 
 Ball* InitBall(cpSpace *space, SDL_Renderer *renderer, cpVect pos, cpVect vel, float radius, const char *path){
     Ball *ball = (Ball*)malloc( sizeof(Ball) );
-    float mass = 10;
+    float mass = 20;
     cpFloat moment = cpMomentForCircle(mass, 0, radius, cpvzero);
     ball->body = cpSpaceAddBody(space, cpBodyNew(mass, moment)); 
     cpBodySetPosition(ball->body, pos);
     cpBodySetVelocity(ball->body, vel);
     ball->shape = cpSpaceAddShape(space, cpCircleShapeNew(ball->body, radius, cpvzero));
     cpShapeSetElasticity(ball->shape, 1.0);
-    cpShapeSetFriction(ball->shape, 0.7);
+    cpShapeSetFriction(ball->shape, 0.1);
 
     sscanf(path, "%s", ball->img.sprite);
     
@@ -31,8 +31,8 @@ Ball* InitBumper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, cpVect vel,
     cpBodySetPosition(ball->body, pos);
     cpBodySetVelocity(ball->body, vel);
     ball->shape = cpSpaceAddShape(space, cpCircleShapeNew(ball->body, radius, cpvzero));
-    cpShapeSetElasticity(ball->shape, 1.0);
-    cpShapeSetFriction(ball->shape, 0.7);
+    cpShapeSetElasticity(ball->shape, 0.8);
+    cpShapeSetFriction(ball->shape, 0.5);
 
     sscanf(path, "%s", ball->img.sprite);
     
@@ -64,3 +64,11 @@ void DeleteBall( cpSpace *space, Ball *ball ){
     free(ball);
 }
 
+void DeleteBumper( cpSpace *space, Ball *ball ){
+    cpSpaceRemoveShape( space, ball->shape );
+    cpBodyFree(ball->body);
+    cpShapeFree(ball->shape);
+    SDL_DestroyTexture(ball->img.texture);
+    free(ball);
+
+}

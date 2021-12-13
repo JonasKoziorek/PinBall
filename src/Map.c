@@ -88,8 +88,8 @@ void SetupSprings( cpSpace *space, Map *map, const int len, SDL_Renderer *render
 
 void SetupFlippers( cpSpace *space, SDL_Renderer *renderer , Map *map, const char *path){
     map->flips.texture =  IMG_LoadTexture(renderer, path);
-    map->flips.arr[0] = InitFlipper(space, renderer, cpv(200,-650), 130, 30, FlipperSideLeft);
-     map->flips.arr[1] = InitFlipper(space, renderer, cpv(370,-650), 130, 30, FlipperSideRight);
+    map->flips.arr[0] = InitFlipper(space, renderer, cpv(200,-660), 130, 30, FlipperSideLeft);
+     map->flips.arr[1] = InitFlipper(space, renderer, cpv(370,-660), 130, 30, FlipperSideRight);
 }
 
 void SetupCurves( cpSpace *space, Map *map, const int len, SDL_Renderer *renderer, const char *path){
@@ -152,12 +152,12 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
 
     Map* map = (Map*)malloc( sizeof(Map) );
 
-    map->fri = 0.5;
-    map->ela = 0.3;
+    map->fri = 0.1;
+    map->ela = 0.2;
 
     // curves
     const int curvelen = 4;
-    SetupCurves( space, map, curvelen, renderer, "images/rcurve.png" );
+    SetupCurves( space, map, curvelen, renderer, "images/curve.png" );
 
     // walls
     const int wallen = 5;
@@ -165,7 +165,7 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
 
     // boxes
     const int boxlen = 6;
-    SetupBoxes( space, map, boxlen, renderer, "images/wall.jpg" );
+    SetupBoxes( space, map, boxlen, renderer, "images/wall.png" );
 
     // flippers
     SetupFlippers( space, renderer, map, "images/flipper.png" );  
@@ -175,7 +175,7 @@ Map* InitMap( cpSpace *space, Frame frame, SDL_Renderer *renderer ){
     SetupSlingshots( map, space, renderer, slinglen, "images/slingshot.png" );
 
     // springs
-    SetupSprings( space, map, 2, renderer, "images/black.png" );
+    SetupSprings( space, map, 2, renderer, "images/wall.png" );
 
     return map;
 }

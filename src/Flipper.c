@@ -1,20 +1,43 @@
 #include "Flipper.h"
 #include <SDL2/SDL_render.h>
 
+void ComputeFlipperVerts(float width, float height,cpVect *verts, FlipperSide side){
+    printf("check");
+    if( side == FlipperSideLeft ){
+        printf("yes");
+        verts[0] = cpv( -width / 2.0, height / 2.0 );
+        verts[1] = cpv( width / 2.0, -height / 4.0 );
+        verts[2] = cpv( width / 2.0, -height / 2.0 );
+        verts[3] = cpv( -width / 2.0, -height / 2.0 );
+        verts[4] = cpv( -width / 2.0, height / 3.0 );
+    }
+    else{
+        printf("no");
+        verts[0] = cpv( width / 2.0, height / 3.0 );
+        verts[1] = cpv( -width / 2.0, -height / 4.0 );
+        verts[2] = cpv( -width / 2.0, -height / 2.0 );
+        verts[3] = cpv( width / 2.0, -height / 2.0 );
+        verts[4] = cpv( width / 2.0, height / 3.0 );
+    }
+}
+
 Flipper* InitFlipper(cpSpace *space, SDL_Renderer *renderer, cpVect pos, float width, float height, FlipperSide side){
     Flipper *flip = (Flipper*)malloc( sizeof(Flipper) );
     flip->body = cpBodyNewStatic();
     flip->angle = 0;
+    flip->side = side;
     cpBodySetCenterOfGravity( flip->body, cpv( side == FlipperSideLeft ? -width / 2.0 : width / 2.0, height / 2) );
     pos.x += width / 2.0;
     pos.y -= height / 2.0;
     cpBodySetPosition(flip->body, pos);
     cpBodySetVelocity(flip->body, cpvzero);
 
-    flip->shape = cpSpaceAddShape(space, cpBoxShapeNew(flip->body, width, height, 0.01) );
-    cpShapeSetElasticity(flip->shape, 0.8);
+    const int vert_num = 5;
+    cpVect verts[vert_num];
+    ComputeFlipperVerts(width, height, verts, flip->side);
+    flip->shape = cpSpaceAddShape(space, cpPolyShapeNewRaw(flip->body, vert_num, verts, 10)); 
+    cpShapeSetElasticity(flip->shape, 0.6);
     cpShapeSetFriction(flip->shape, 0.4);
-    flip->side = side;
     flip->state = FlipperNotMoving;
 
     flip->rect.x = cpBodyGetPosition(flip->body).x- width / 2.0;
@@ -78,7 +101,6 @@ void FlipperMove( cpSpace *space, Flipper *flip, cpFloat timestep ){
 
 void DeleteFlipper( cpSpace *space, Flipper *flip){
     cpSpaceRemoveShape( space, flip->shape );
-    cpSpaceRemoveBody( space, flip->body );
     cpShapeFree( flip->shape );
     cpBodyFree( flip->body );
     free(flip);

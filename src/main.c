@@ -7,19 +7,10 @@
 #include "Map.h"
 #include "Game.h"
 
-// draws borders of SDL_Rect 
-static void WrapPic(SDL_Rect rect, SDL_Renderer *renderer){
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-    SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x + rect.w, rect.y);
-    SDL_RenderDrawLine(renderer, rect.x, rect.y + rect.h, rect.x + rect.w, rect.y + rect.h);
-    SDL_RenderDrawLine(renderer, rect.x, rect.y, rect.x, rect.y + rect.h);
-    SDL_RenderDrawLine(renderer, rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + rect.h);
-}
-
 // release allocated memory
 static void CleanUp(cpSpace *space, BallArr *ballarr, Map *map, Game *game){
-    DestroyBallArr( space, ballarr );
     DestroyMap(space, map);
+    DestroyBallArr( space, ballarr );
     DeleteGame( game );
 }
 

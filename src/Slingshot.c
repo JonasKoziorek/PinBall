@@ -34,12 +34,12 @@ Slingshot* InitSlingshot(cpSpace *space, SDL_Renderer *renderer, cpVect pos, flo
     cpVect verts[len]; 
     ComputeSlingVerts(width, height, verts, sling->type);
     sling->shape = cpSpaceAddShape(space, cpPolyShapeNewRaw(sling->body, len, verts, radius) );
-    cpShapeSetFriction(sling->shape, 5.0);
     cpShapeSetElasticity(sling->shape, 0.2);
+    cpShapeSetFriction(sling->shape, 2.0);
 
     // setup sdl texture and rect
-    sling->rect.x = cpBodyGetPosition(sling->body).x; 
-    sling->rect.y = - cpBodyGetPosition(sling->body).y; 
+    sling->rect.x = cpBodyGetPosition(sling->body).x - width / 2.0; 
+    sling->rect.y = - cpBodyGetPosition(sling->body).y - height / 2.0; 
     sling->rect.w = width;
     sling->rect.h = height;
 
@@ -59,7 +59,6 @@ void PrintSlingshot( SDL_Renderer *renderer, Slingshot *sling, SDL_Texture *text
 // free memory allocated in InitSlingshot
 void DeleteSlingshot( cpSpace *space, Slingshot *sling ){
     cpSpaceRemoveShape( space, sling->shape );
-    cpSpaceRemoveBody( space, sling->body );
     cpShapeFree(sling->shape);
     cpBodyFree(sling->body);
     free(sling);

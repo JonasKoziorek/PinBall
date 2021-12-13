@@ -23,7 +23,6 @@ void PrintBox( SDL_Renderer *renderer, Box *box, SDL_Texture *texture ){
 }
 
 void DeleteBox( cpSpace *space, Box *box ){
-    cpSpaceRemoveBody( space, box->body );
     cpSpaceRemoveShape( space, box->shape );
     cpShapeFree(box->shape);
     cpBodyFree(box->body);

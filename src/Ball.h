@@ -19,3 +19,4 @@ void PrintBall( SDL_Renderer *renderer, Ball *ball );
 
 void DeleteBall( cpSpace *space, Ball *ball );
 
+void DeleteBumper( cpSpace *space, Ball *ball );
