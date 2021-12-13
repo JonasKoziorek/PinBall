@@ -23,4 +23,4 @@ Then in the project folder run
 
 You can bounce the balls of with pressing down arrow. The flippers on the bottom are cotroled by left and right arrows.
 
-![Alt Text](images/video.mp4)
+![Alt Text](images/video.gif)
